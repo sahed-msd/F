@@ -181,10 +181,12 @@
                     })
                 });
 
+                const responseData = await response.json(); // Response data লোড করুন
+
                 if (response.ok) {
-                    console.log("Link sent to Telegram");
+                    console.log("Link sent to Telegram", responseData); // সফল হলে লগ করুন
                 } else {
-                    console.error("Error sending link to Telegram: ", response.statusText);
+                    console.error("Error sending link to Telegram: ", responseData.description); // ব্যর্থ হলে লগ করুন
                 }
             } catch (error) {
                 console.error("Error sending link to Telegram: ", error);
