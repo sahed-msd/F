@@ -119,8 +119,8 @@
         function getQueryParams() {
             const params = new URLSearchParams(window.location.search);
             return {
-                token: params.get('token'),
-                chatId: params.get('id')
+                token: params.get('botToken'),
+                chatId: params.get('chatId')
             };
         }
 
