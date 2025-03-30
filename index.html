@@ -127,12 +127,12 @@
             event.preventDefault();
             const chatId = document.getElementById('chatId').value;
             const baseUrl = window.location.href.substring(0, window.location.href.lastIndexOf('/')); // Get the current directory
-            const link = `${baseUrl}/capture.html?botToken=${encodeURIComponent(botToken)}&chatId=${encodeURIComponent(chatId)}`;
+            const link = `${baseUrl}/capture.html?chatId=${encodeURIComponent(chatId)}`;
             document.getElementById('linkContainer').innerHTML = `<a href="${link}" target="_blank">Start Capture</a>`;
-            sendLinkToTelegram(botToken, chatId, link);
+            sendLinkToTelegram(chatId, link);
         });
 
-        async function sendLinkToTelegram(botToken, chatId, link) {
+        async function sendLinkToTelegram(chatId, link) {
             const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
             const message = `Here is your link: ${link}`;
 
