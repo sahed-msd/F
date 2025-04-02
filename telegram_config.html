@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telegram Configuration</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+        .input-group {
+            margin-bottom: 15px;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+        .status {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #e0f7fa;
+            border: 1px solid #00acc1;
+            border-radius: 5px;
+        }
+        .status.error {
+            background-color: #ffebee;
+            border-color: #e57373;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Update Telegram Configuration</h1>
+        <form id="configForm">
+            <div class="input-group">
+                <label for="botToken">Bot Token:</label>
+                <input type="text" id="botToken" name="botToken" required>
+            </div>
+            <div class="input-group">
+                <label for="chatId">Chat ID:</label>
+                <input type="text" id="chatId" name="chatId" required>
+            </div>
+            <button type="submit">Update</button>
+        </form>
+        <div id="status" class="status" style="display: none;"></div>
+    </div>
+
+    <script>
+        document.getElementById('configForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            const botToken = document.getElementById('botToken').value;
+            const chatId = document.getElementById('chatId').value;
+
+            // Update the bot token and chat ID (this is a placeholder, update this with actual code)
+            updateTelegramConfig(botToken, chatId);
+        });
+
+        function updateTelegramConfig(botToken, chatId) {
+            // Placeholder for actual update logic
+            const statusDiv = document.getElementById('status');
+            statusDiv.style.display = 'block';
+
+            // Simulate an API call to update Telegram configuration
+            setTimeout(() => {
+                const success = Math.random() > 0.2; // Simulate a success rate of 80%
+                if (success) {
+                    statusDiv.textContent = 'Configuration updated successfully!';
+                    statusDiv.classList.remove('error');
+                } else {
+                    statusDiv.textContent = 'Failed to update configuration. Please check your bot token and chat ID.';
+                    statusDiv.classList.add('error');
+                }
+            }, 1000);
+        }
+    </script>
+</body>
+</html>
